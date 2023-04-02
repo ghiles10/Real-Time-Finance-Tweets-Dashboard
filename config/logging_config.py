@@ -1,9 +1,13 @@
 import logging
 import os
 import sys
+from pathlib import Path
 
-if not os.path.exists("extract/log/"):
-    os.mkdir("extract/log/")
+
+FILE_DIR = Path(__file__).parent
+
+if not os.path.exists(f"{FILE_DIR}/log/"):
+    os.mkdir(f"{FILE_DIR}/log/")
 
 file_name = os.path.basename(sys.argv[0]).split(".")[0]
 

@@ -1,8 +1,6 @@
 import tweepy
 import stocks_api
-from config import core, schema
-import logging_config
-
+from config import core, schema, logging_config
 
 # init logger 
 logger = logging_config.logger

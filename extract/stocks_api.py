@@ -1,10 +1,8 @@
 import sys
 sys.path.append('/workspaces/Finance-dashbord')  
-print('yoooooooooooo')
 import requests
 import json
-from config import core, schema
-import logging_config
+from config import core, schema, logging_config
 
 # Initialisation de la configuration de logging
 logger = logging_config.logger
