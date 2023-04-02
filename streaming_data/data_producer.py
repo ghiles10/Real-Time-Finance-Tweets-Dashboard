@@ -2,9 +2,13 @@ import sys
 import time
 import threading
 import json
+from pathlib import Path
+
+# Project Directories
+ROOT = Path(__file__).parent.parent
 
 # Append the path
-sys.path.append('/workspaces/Finance-dashbord')
+sys.path.append(f'{ROOT}')
 
 # Import required libraries
 from kafka import KafkaProducer
