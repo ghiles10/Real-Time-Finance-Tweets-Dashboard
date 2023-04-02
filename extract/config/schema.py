@@ -12,3 +12,10 @@ class TwitterConfig(BaseModel):
     CONSUMER_SECRET : str
     
 
+class StocksConfig(BaseModel):
+    
+    """ stocks config class """
+    
+    url_symbols : str
+    timeout : int
+    url_data : str 

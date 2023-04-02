@@ -11,15 +11,7 @@ CONFIG_FILE = ROOT / "config.yaml"
 def validate_config_yaml(config_path: Union[str, Path] = None) -> Path:
     """
     Validate the config.yaml file.
-    
-    Args:
-        config_path (Union[str, Path]): Path to the config.yaml file.
-    
-    Returns:
-        Path: Validated path to the config.yaml file.
-    
-    Raises:
-        FileNotFoundError: If the config file is not found at the given path.
+
     """
     config_path = Path(config_path)
     
@@ -32,12 +24,6 @@ def validate_config_yaml(config_path: Union[str, Path] = None) -> Path:
 def load_config(config_path: Union[str, Path] = CONFIG_FILE) -> strictyaml.YAML:
     """
     Load the config.yaml file containing twitter credentials using strictyaml.
-    
-    Args:
-        config_path (Union[str, Path]): Path to the config.yaml file.
-    
-    Returns:
-        strictyaml.YAML: Parsed YAML data from the config file.
     """
     file = validate_config_yaml(config_path)
     
