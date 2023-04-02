@@ -6,7 +6,7 @@ import logging_config
 logger = logging_config.logger
 
 
-class ExtractApi:
+class ExtractStock:
 
     """Class pour extraire les données de l'API Binance et de l'API KuCoin"""
 
@@ -63,8 +63,8 @@ class ExtractApi:
 # Bloc principal
 if __name__ == "__main__":
     
-    # Création de l'objet ExtractApi
-    extract_api = ExtractApi()
+    # Création de l'objet ExtractStock
+    extract_api = ExtractStock()
     # Extraction des symboles de Binance
     extract_api.extract_symbols()
     # Extraction des données de KuCoin pour les symboles extraits
