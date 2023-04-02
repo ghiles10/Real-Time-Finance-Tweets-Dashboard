@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/workspaces/Finance-dashbord')  
+print('yoooooooooooo')
 import requests
 import json
 from config import core, schema

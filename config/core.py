@@ -4,8 +4,9 @@ import strictyaml
 
 
 # Project Directories
-ROOT = Path(__file__).parent.parent.parent
-CONFIG_FILE = ROOT / "config.yaml"
+ROOT = Path(__file__).parent.parent
+CONFIG_DIR = ROOT / "config"
+CONFIG_FILE = CONFIG_DIR / "config.yaml"
 
 
 def validate_config_yaml(config_path: Union[str, Path] = None) -> Path:
@@ -23,7 +24,7 @@ def validate_config_yaml(config_path: Union[str, Path] = None) -> Path:
 
 def load_config(config_path: Union[str, Path] = CONFIG_FILE) -> strictyaml.YAML:
     """
-    Load the config.yaml file containing twitter credentials using strictyaml.
+    Load the config.yaml file using strictyaml.
     """
     file = validate_config_yaml(config_path)
     
