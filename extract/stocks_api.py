@@ -21,7 +21,7 @@ class ExtractStock:
         response = requests.get(path, timeout=5)
         # Vérification du code de statut de la réponse
         if response.status_code == 200:
-            logger.debug("extract_symbols : response status code is 200")
+            logger.info("extract_symbols : response status code is 200")
 
             # Conversion de la réponse en JSON
             response = json.loads(response.text)
@@ -40,10 +40,10 @@ class ExtractStock:
         
         """Méthode pour extraire les données de l'API KuCoin"""
 
-        logger.debug("extracting finance data")
+        logger.info("extracting finance data")
         # Limitation à 100 symboles maximum
-        self.symbols = list(set(self.symbols))[:10]
-        data = []
+        self.symbols = list(set(self.symbols))[:5]
+        # data = []
 
         # Parcours des symboles
         for symbol in self.symbols:
@@ -52,12 +52,13 @@ class ExtractStock:
             # Vérification du code de statut de la réponse
             if response.status_code == 200:
                 # Ajout des données au format JSON
-                data.append(json.loads(response.text)["data"])
+                # data.append(json.loads(response.text)["data"])
+                yield json.loads(response.text)["data"]
 
             else : 
                 raise Exception(f"extract_data : response status code {response.status_code}")
             
-        return data
+        # return data
 
 
 # Bloc principal
@@ -70,4 +71,6 @@ if __name__ == "__main__":
     # Extraction des données de KuCoin pour les symboles extraits
     data = extract_api.extract_data()
     
-    print(data[:10])
+    for i in data : 
+        print(i)
+        print('*' * 50)
