@@ -19,3 +19,13 @@ class StocksConfig(BaseModel):
     url_symbols : str
     timeout : int
     url_data : str 
+
+class kafkaConfig(BaseModel):
+    
+    """ kafka config class """
+  
+    topic_data: str 
+    topic_tweets: str
+    bootstrap_servers: str
+    
+ 
