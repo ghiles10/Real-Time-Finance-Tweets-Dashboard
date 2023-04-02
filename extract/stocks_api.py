@@ -1,8 +1,9 @@
-import sys
-sys.path.append('/workspaces/Finance-dashbord')  
+# import sys
+# sys.path.append('/workspaces/Finance-dashbord')  
 import requests
 import json
-from config import core, schema, logging_config
+from config import core, schema
+import logging_config
 
 # Initialisation de la configuration de logging
 logger = logging_config.logger
@@ -33,6 +34,7 @@ class ExtractStock:
             # Parcours des symboles de la réponse
             for symbol in response:
                 for value in symbol.values():
+                    
                     # Ajout des symboles se terminant par USDT
                     if value.endswith("USDT"):
                         self.symbols.append(value)
@@ -62,7 +64,6 @@ class ExtractStock:
             else : 
                 raise Exception(f"extract_data : response status code {response.status_code}")
             
-        # return data
 
 
 # Bloc principal

@@ -1,3 +1,4 @@
 pydantic==1.10.7
 strictyaml==1.7.3
 tweepy==4.13.0
+kafka-python==2.0.2
