@@ -42,7 +42,7 @@ class ExtractApi:
 
         logger.debug("extracting finance data")
         # Limitation à 100 symboles maximum
-        self.symbols = list(set(self.symbols))[:100]
+        self.symbols = list(set(self.symbols))[:10]
         data = []
 
         # Parcours des symboles

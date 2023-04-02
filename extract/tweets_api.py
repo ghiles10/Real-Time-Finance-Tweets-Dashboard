@@ -1,5 +1,6 @@
 import tweepy
 from config import core, schema
+from stocks_api import StocksApi
 
 class ExtractTweets : 
     
@@ -22,3 +23,20 @@ class ExtractTweets :
                
         return self.__auth 
     
+    def retrieve_tweets(self, hashtag : str, count : int = 100) -> list:
+        
+        # Twitter authentication
+        if not self.__auth : 
+            self.authentification()
+        
+        # Twitter API
+        try:
+            api = tweepy.API(self.__auth)
+
+        except tweepy.TweepError as e:
+            print(f"An error occurred: {e.response.status_code}")
+            
+        # Retrieve tweets
+        tweets = api.search_tweets(q = hashtag, count = count)
+    
+            
