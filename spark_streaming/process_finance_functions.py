@@ -7,7 +7,8 @@ from pyspark.sql.functions import (
     col,
     year,
     split,
-    struct
+    struct,
+    to_json
 )
 from pyspark.sql.types import StructType, StructField, StringType, DoubleType, LongType
 
@@ -99,5 +100,13 @@ def nested_data_finance_stream(data_stream_json) :
         "takerFeeRate", "makerFeeRate", "takerCoefficient", "makerCoefficient", "vol", "volValue", 
         "year", "month", "day", "hour"  
     )
+    
+    data_stream_json = data_stream_json.select(
+    col("symbol"),
+    to_json(col("prices")).alias("prices"),
+    to_json(col("fees")).alias("fees"),
+    to_json(col("volume")).alias("volume"),
+    to_json(col("time")).alias("time")
+)
 
     data_stream_json.writeStream.format("console").start().awaitTermination() 

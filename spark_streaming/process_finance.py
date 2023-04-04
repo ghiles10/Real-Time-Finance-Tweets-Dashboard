@@ -1,5 +1,4 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.types import StructType, StructField, StringType, DoubleType, LongType
 from process_finance_functions import  *
 
 
