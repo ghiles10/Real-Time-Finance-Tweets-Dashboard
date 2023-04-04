@@ -77,11 +77,12 @@ def preprocess_finance_stream(data_stream):
 
     return data_stream_json
 
+
 def nested_data_finance_stream(data_stream_json) : 
     
     """ denormalize data stream """
         
-    # write to nested json
+    # write to nested json format
     data_stream_json = data_stream_json.withColumn("prices", struct(
         col("buy"), col("sell"), col("changeRate"), col("changePrice"),
         col("high"), col("low"), col("last"), col("averagePrice")
