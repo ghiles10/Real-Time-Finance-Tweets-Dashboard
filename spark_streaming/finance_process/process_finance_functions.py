@@ -75,7 +75,7 @@ def preprocess_finance_stream(data_stream):
     )
     
 
-    return data_stream
+    return data_stream_json
 
 def nested_data_finance_stream(data_stream_json) : 
     
@@ -107,6 +107,6 @@ def nested_data_finance_stream(data_stream_json) :
     to_json(col("fees")).alias("fees"),
     to_json(col("volume")).alias("volume"),
     to_json(col("time")).alias("time")
-)
+    )
 
     data_stream_json.writeStream.format("console").start().awaitTermination() 

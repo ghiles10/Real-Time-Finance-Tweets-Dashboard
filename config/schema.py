@@ -28,4 +28,12 @@ class kafkaConfig(BaseModel):
     topic_tweets: str
     bootstrap_servers: str
     
- 
+class SparkConfig(kafkaConfig, BaseModel): 
+    """spark config class  """
+    
+    master: str
+    app_name: str
+    checkpoint_path: str
+    data_path: str
+    batch_duration: int
+    outputMode: str 

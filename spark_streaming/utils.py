@@ -1,6 +1,5 @@
 from pyspark.sql import SparkSession
 
-
 def read_kafka_streams(address : str, spark : SparkSession, topic :str):
     """ read data from kafka topic and return a data stream"""
 
