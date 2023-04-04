@@ -1,0 +1,30 @@
+twitter_credentials: 
+
+  ACCES_KEY: 95U6x3ih1MIzIMlGZxuIuXN8t
+  ACCES_SECRET: UvO4jKztNuN0SdtQtcD5z69iBqsGXAjvMyRLn9IXcSfB6mPLVg
+  CONSUMER_KEY: 1572886741-LOU6Eq8XuH1piFGql1V0yBxRfNaCQ4RpyZJUSu5
+  CONSUMER_SECRET: CSVMuSHqkydo21OzDHaT8RQaMljR8Q4tNdP9X3gHlUt2p
+
+api_finance_config: 
+
+  url_symbols: https://api.binance.com/api/v3/ticker/price
+  timeout: 5
+  url_data: https://api.kucoin.com/api/v1/market/stats?symbol=
+
+kafka_config:
+  
+  topic_data: finance
+  topic_tweets: tweets
+  bootstrap_servers: localhost:9092
+ 
+spark_config: 
+
+  master: yarn
+  app_name: Finance_tweet_dashboard
+  checkpoint_path: gs://kafka-finance-data/cheks
+  data_path: gs://finance-dashbord/data
+  batch_duration: 10 seconds
+  outputMode: append
+  topic_data: finance
+  topic_tweets: tweets
+  bootstrap_servers: 10.200.0.2:9092
