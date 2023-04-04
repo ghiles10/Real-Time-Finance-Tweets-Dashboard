@@ -30,7 +30,7 @@ json_schema = spark.read.json(data_stream_text.select("value"))
 
 
 # Écrivez les résultats dans la console pour le débogage
-query = data_stream_json \
+query = json_schema \
     .writeStream \
     .outputMode("append") \
     .format("console") \
