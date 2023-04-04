@@ -110,4 +110,5 @@ def nested_data_finance_stream(data_stream_json) :
     to_json(col("time")).alias("time")
     )
 
-    data_stream_json.writeStream.format("console").start().awaitTermination() 
+    return data_stream_json
+    # data_stream_json.writeStream.format("console").start().awaitTermination() 
