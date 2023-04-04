@@ -30,9 +30,9 @@ data_json = nested_data_finance_stream(processed_stream)
 query = (
     data_json.writeStream.outputMode(APP_CONFIG.outputMode)
     .format("json")
-    .option("path", APP_CONFIG.data_path)s
+    .option("path", APP_CONFIG.data_path)
     .option("checkpointLocation", APP_CONFIG.checkpoint_path)
-    .trigger( APP_CONFIG.batch_duration )
+    .trigger( processingTime= str(APP_CONFIG.batch_duration )) 
     .start()
 )
 

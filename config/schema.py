@@ -35,5 +35,5 @@ class SparkConfig(kafkaConfig, BaseModel):
     app_name: str
     checkpoint_path: str
     data_path: str
-    batch_duration: int
+    batch_duration: str
     outputMode: str 
