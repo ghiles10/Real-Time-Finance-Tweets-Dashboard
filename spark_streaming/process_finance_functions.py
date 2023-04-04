@@ -1,4 +1,3 @@
-from pyspark.sql import SparkSession
 from pyspark.sql.functions import (
     expr,
     from_json,
@@ -11,22 +10,12 @@ from pyspark.sql.functions import (
 )
 from pyspark.sql.types import StructType, StructField, StringType, DoubleType, LongType
 
-spark = SparkSession.builder.appName("SparkStreaming").getOrCreate() 
 
-# Définition du flux d'entrée
-data_stream = (
-    spark.readStream.format("kafka")
-    .option("kafka.bootstrap.servers", "10.200.0.2:9092")
-    .option("subscribe", 'finance')
-    .option("startingOffsets", "earliest")
-    .load()
-)
+def preprocess_finance_stream(data_stream):
+    
+    """process finance stream data"""
 
-
-def preprocess_stream(data_stream, topic="finance"):
-    """Fonction pour prétraiter un flux de données à partir d'un topic Kafka"""
-
-    # Définition du schéma des données JSON
+    # Json schema for the data stream
     json_schema = StructType(
         [
             StructField("time", LongType()),
@@ -48,7 +37,7 @@ def preprocess_stream(data_stream, topic="finance"):
         ]
     )
 
-    # Transformation de la colonne "value" de string à JSON et sélection des champs
+    # Transformation of the data stream 
     data_stream_json = data_stream.select(
         from_json(expr("CAST(value AS STRING)"), json_schema).alias("json_data")
     ).selectExpr(
@@ -69,7 +58,19 @@ def preprocess_stream(data_stream, topic="finance"):
         "json_data.takerCoefficient",
         "json_data.makerCoefficient",
     )
-    
-    data_stream_json.writeStream.format("console").start().awaitTermination() 
 
-preprocess_stream(data_stream)
+    # Transformation of the "time" column 
+    data_stream_json = (
+        data_stream_json.withColumn("time", (col("time") / 1000).cast("timestamp"))
+        .withColumn("year", year("time"))
+        .withColumn("month", month("time"))
+        .withColumn("day", dayofmonth("time"))
+        .withColumn("hour", hour("time"))
+    )
+
+    # Split the "symbol" column to keep only the name of the crypto-currency
+    data_stream_json = data_stream_json.withColumn(
+        "symbol", split(data_stream_json["symbol"], "-")[0]
+    )
+
+    return data_stream
