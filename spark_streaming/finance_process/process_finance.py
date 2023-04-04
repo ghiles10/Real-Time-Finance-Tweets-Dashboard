@@ -1,5 +1,12 @@
+from pathlib import Path
 import sys
-sys.path.append('/workspaces/Finance-dashbord')
+
+# Project Directories
+ROOT = Path(__file__).parent.parent
+
+# Append the path
+sys.path.append(f'{ROOT}')
+
 
 from pyspark.sql import SparkSession
 
