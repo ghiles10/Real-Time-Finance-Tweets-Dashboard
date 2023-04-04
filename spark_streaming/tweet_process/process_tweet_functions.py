@@ -26,8 +26,7 @@ data_stream = read_kafka_streams(spark = spark, address = APP_CONFIG.bootstrap_s
 data_stream_text = data_stream.selectExpr("CAST(value AS STRING)")
 
 # Inférez le schéma JSON à partir des données (vous pouvez également définir le schéma manuellement)
-json_schema = spark.read.json(data_stream_text.select("value"))
-
+json_schema = data_stream_text.select("value")
 
 # Écrivez les résultats dans la console pour le débogage
 query = json_schema \
