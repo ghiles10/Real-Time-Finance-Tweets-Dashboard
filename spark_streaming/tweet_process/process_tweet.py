@@ -1,37 +1,35 @@
 from pyspark.sql import SparkSession
 from pathlib import Path
-import sys
-
-# Project Directories
-ROOT = Path(__file__).parent.parent.parent
-# Append the path
-sys.path.append(f'{ROOT}')
 
 from spark_streaming.utils import read_kafka_streams
-from process_tweet_functions import transform_tweet_info 
+from spark_streaming.tweet_process.process_tweet_functions import transform_tweet_info 
 from config import core, schema
 
  
 # config file
 APP_CONFIG = schema.SparkConfig(**core.load_config().data["spark_config"])
 
-# spark session
-spark = SparkSession.builder.appName(APP_CONFIG.app_name ).getOrCreate() 
+# # spark session
+# spark = SparkSession.builder.appName(APP_CONFIG.app_name ).getOrCreate() 
 
-# read data stream from kafka 
-data_stream = read_kafka_streams(
-                                spark = spark,
-                                address = APP_CONFIG.bootstrap_servers,
-                                topic = APP_CONFIG.topic_tweets
-                                 ) 
+def process_tweet(spark) -> None: 
 
-data_stream = transform_tweet_info(data_stream)
+    # read data stream from kafka 
+    data_stream = read_kafka_streams(
+                                    spark = spark,
+                                    address = APP_CONFIG.bootstrap_servers,
+                                    topic = APP_CONFIG.topic_tweets
+                                    ) 
 
-# Écrivez les résultats dans la console pour le débogage
-query = data_stream \
-    .writeStream \
-    .outputMode("append") \
-    .format("console") \
-    .start()
+    data_stream = transform_tweet_info(data_stream)
 
-query.awaitTermination()
+    query = (
+        data_stream.writeStream.outputMode(APP_CONFIG.outputMode)
+        .format("json")
+        .option("path", str(APP_CONFIG.data_path) + "/" + "tweets" )
+        .option("checkpointLocation", APP_CONFIG.checkpoint_path)
+        .trigger( processingTime= str(APP_CONFIG.batch_duration )) 
+        .start()
+    )
+
+    query.awaitTermination()

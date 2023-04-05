@@ -1,4 +1,3 @@
-from pathlib import Path
 import datetime
 from pyspark.sql.functions import regexp_replace, udf, lower
 from pyspark.sql.types import TimestampType
