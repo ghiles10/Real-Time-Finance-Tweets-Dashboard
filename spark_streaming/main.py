@@ -1,5 +1,5 @@
 import sys 
-import threading
+from multiprocessing import Process
 from pathlib import Path
 from pyspark.sql import SparkSession 
 
@@ -18,11 +18,15 @@ APP_CONFIG = schema.SparkConfig(**core.load_config().data["spark_config"])
 spark = SparkSession.builder.appName(APP_CONFIG.app_name ).getOrCreate() 
 
 # launch threads for each process topic
-thread1 = threading.Thread(target=process_tweet, args=(spark,))
-thread2 = threading.Thread(target=process_finance, args=(spark,))
+p1 = Process(target=process_tweet, args=(spark,))
+p2 = Process(target=process_finance, args=(spark,))
 
-thread1.start()
-thread2.start()
+p1.start()
+p2.start()
 
-thread1.join()
-thread2.join()
+p1.join()
+p2.join()
+
+sys.exit()
+
+
