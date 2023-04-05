@@ -15,12 +15,12 @@ def transform_tweet_info(data_stream) :
     udf_current_time = udf(current_time, TimestampType())
     
     #convert data stream to string
-    data_stream_text = data_stream.selectExpr("CAST(value AS STRING)")
-    json_schema = data_stream_text.select("value")
+    data_stream_value = data_stream.selectExpr("CAST(value AS STRING)")
+    json_schema = data_stream_value.select("value")
         
     # delete special characters
-    tweet_df = json_schema.withColumn("value", regexp_replace("text", "[^a-zA-Z\\s]", "")) \
-            .withColumn("text", regexp_replace("text", "^@\\w+", "")) 
+    tweet_df = json_schema.withColumn("value", regexp_replace("value", "[^a-zA-Z\\s]", "")) \
+            .withColumn("value", regexp_replace("value", "^@\\w+", "")) 
     
     # convert to lower case
     tweet_df = tweet_df.withColumn("value", lower(tweet_df["value"])) 
