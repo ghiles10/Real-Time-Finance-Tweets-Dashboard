@@ -1,18 +1,8 @@
-import sys 
 import pymongo
 import json
 from google.cloud import storage
-from pathlib import Path
-
-ROOT = Path(__file__).parent.parent.parent 
-sys.path.append(f"{ROOT}")
-
-from config import schema, core
+from utils import client, bucket_name
 from gcs_connection import list_blobs
-
-
-# Load Kafka configuration from the config file
-APP_CONFIG = schema.MongoDB(**core.load_config().data["monog_db"])
 
 
 def insert_json_file(bucket_name :str, file_path : str, db : pymongo.database.Database):
@@ -33,13 +23,10 @@ def insert_json_file(bucket_name :str, file_path : str, db : pymongo.database.Da
             db.tweet.insert_one(file_data)
             
             
-def load_collections(): 
+def load_collections(client  = client, bucket = bucket_name): 
+    """ Load all json files from gcs in MongoDB collection """
 
-    # Connect to MongoDB
-    client = pymongo.MongoClient( str(APP_CONFIG.db_connection)   ) 
-
-    # connect to database and send json files     
-    bucket = APP_CONFIG.bucket_name
+  
     db = client.twitter
 
     for filename in list_blobs('finance-dashbord',"data/tweets/"):
@@ -50,5 +37,5 @@ def load_collections():
     db.close()
 
 
-
-
+if __name__ == "__main__":
+    load_collections()

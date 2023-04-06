@@ -44,3 +44,12 @@ class MongoDB(BaseModel):
     
     db_connection: str
     bucket_name : str
+    
+class ElasticSearch(BaseModel):
+    
+    """ ElasticSearch config class """
+    
+    cloud_id: str
+    user: str
+    password : str
+    index_name: str
