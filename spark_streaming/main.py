@@ -1,5 +1,5 @@
 import sys 
-from multiprocessing import Process
+from threading import Thread
 from pathlib import Path
 from pyspark.sql import SparkSession 
 
@@ -18,10 +18,17 @@ APP_CONFIG = schema.SparkConfig(**core.load_config().data["spark_config"])
 spark = SparkSession.builder.appName(APP_CONFIG.app_name ).getOrCreate() 
 
 # launch   each process topic
-print('$' * 50)
+print('$' * 100, end = "\n")
 
-process_tweet(spark) 
-print('*' * 50) 
-process_finance(spark)
-priunt('-' * 50)
+th1 = Thread(target=process_tweet, args=(spark,))
+th2 = Thread(target=process_finance, args=(spark,)) 
 
+print('1' * 100, end = "\n")
+th1.start() 
+
+print('2' * 100, end = "\n")
+
+th2.start()
+
+th1.join()
+th2.join()
