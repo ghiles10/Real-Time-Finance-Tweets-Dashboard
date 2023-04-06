@@ -24,7 +24,7 @@ def insert_json_file(bucket_name :str, file_path : str, db : pymongo.database.Da
             
             
 def load_collections(client  = client, bucket = bucket_name): 
-    """ Load all json files from gcs in MongoDB collection """
+    """ Load and insert all json tweets files from gcs in MongoDB collection """
 
   
     db = client.twitter
