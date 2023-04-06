@@ -17,16 +17,11 @@ APP_CONFIG = schema.SparkConfig(**core.load_config().data["spark_config"])
 
 spark = SparkSession.builder.appName(APP_CONFIG.app_name ).getOrCreate() 
 
-# launch threads for each process topic
-p1 = Process(target=process_tweet, args=(spark,))
-p2 = Process(target=process_finance, args=(spark,))
+# launch   each process topic
+print('$' * 50)
 
-p1.start()
-p2.start()
-
-p1.join()
-p2.join()
-
-sys.exit()
-
+process_tweet(spark) 
+print('*' * 50) 
+process_finance(spark)
+priunt('-' * 50)
 
