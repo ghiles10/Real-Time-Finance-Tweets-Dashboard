@@ -3,7 +3,7 @@ from pathlib import Path
 from pyspark.sql import SparkSession 
 
 # Project Directories
-ROOT = Path(__file__).parent.parent
+ROOT = Path(__file__).parent.parent.parent
 # Append the path
 sys.path.append(f'{ROOT}')
 

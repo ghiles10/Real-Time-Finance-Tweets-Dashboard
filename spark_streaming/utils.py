@@ -8,6 +8,7 @@ def read_kafka_streams(address : str, spark : SparkSession, topic :str):
         .option("kafka.bootstrap.servers", address)
         .option("subscribe", topic)
         .option("startingOffsets", "earliest")
+        .option("failOnDataLoss", "false")
         .load()
     )
     
