@@ -53,3 +53,13 @@ class ElasticSearch(BaseModel):
     user: str
     password : str
     index_name: str
+    
+class BigQuery(BaseModel):
+    
+    """ BigQuery config class """
+    
+    project_id: str
+    dataset_id: str
+    table_id: str
+    bucket_name: str
+    google_application_credentials: str

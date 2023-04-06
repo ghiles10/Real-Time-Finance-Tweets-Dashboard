@@ -1,0 +1,156 @@
+import sys 
+from pathlib import Path 
+import os
+from google.cloud import bigquery
+import datetime
+from airflow.operators.dummy_operator import DummyOperator 
+from airflow import DAG
+from airflow.operators.python import PythonOperator
+
+
+ROOT = Path(__file__).parent.parent.parent
+sys.path.append(str(ROOT))
+
+
+from load.big_query.schema import SCHEMA_FACT, SCHEMA_DIM_TIME, SCHEMA_DIM_STOCK
+from load.big_query.query import QUERY_FACT, QUERY_DIM_TIME, QUERY_DIM_STOCK
+from load.big_query.functions_template_dag import (
+    create_insert_temp_table,
+    create_biq_query_table,
+    insert_job_dim_time,
+    insert_job_fact,
+    insert_job_dim_stock,
+    drop_temp_table,
+)
+from config import schema, core
+APP_CONFIG = schema.BigQuery(**core.load_config().data["big_query"])
+
+
+# Get environment variables
+PROJET_ID = APP_CONFIG.project_id
+DATASET_ID = APP_CONFIG.dataset_id
+TABLE_ID = APP_CONFIG.table_id
+BUCKET = APP_CONFIG.bucket_name
+GOOGLE_APPLICATION_CREDENTIALS = APP_CONFIG.google_application_credentials
+
+# Define default arguments
+default_args = {
+    "owner": "airflow",
+    "retries": 3,
+    "retry_delay": datetime.timedelta(minutes=5),
+}
+
+# Define DAG
+with DAG(
+    dag_id="kafka-finance",
+    default_args=default_args,
+    description="data pipeline to generate dims and facts for finance crypto data",
+    schedule_interval="30 * * * *",
+    start_date=datetime.datetime.today(),
+    catchup=False,
+    max_active_runs=3,
+) as dag:
+    # Create a BigQuery client object.
+    client = bigquery.Client()
+
+    # Dummy operator for link
+    created_tables = DummyOperator(task_id="created_tables")
+
+    create_insert_temp_table_big_query = PythonOperator(
+        python_callable=create_insert_temp_table,
+        task_id="create_insert_temp_table",
+        op_kwargs={
+            "PROJET_ID": PROJET_ID,
+            "DATASET_ID": DATASET_ID,
+            "TABLE_ID": TABLE_ID,
+            "BUCKET": BUCKET,
+            "client": client,
+        },
+    )
+
+    create_table_fact = PythonOperator(
+        python_callable=create_biq_query_table,
+        task_id="create_fact_table",
+        op_kwargs={
+            "PROJET_ID": PROJET_ID,
+            "DATASET_ID": DATASET_ID,
+            "TABLE_ID": "fact",
+            "schema": SCHEMA_FACT,
+            "client": client,
+        },
+    )
+
+    create_dim_table_time = PythonOperator(
+        python_callable=create_biq_query_table,
+        task_id="create_dim_table_time",
+        op_kwargs={
+            "PROJET_ID": PROJET_ID,
+            "DATASET_ID": DATASET_ID,
+            "TABLE_ID": "dim_time",
+            "schema": SCHEMA_DIM_TIME,
+            "client": client,
+        },
+    )
+
+    create_table_stock_exchange_price = PythonOperator(
+        python_callable=create_biq_query_table,
+        task_id="create_dim_table_stock_exchange_price",
+        op_kwargs={
+            "PROJET_ID": PROJET_ID,
+            "DATASET_ID": DATASET_ID,
+            "TABLE_ID": "dim_stock",
+            "schema": SCHEMA_DIM_STOCK,
+            "client": client,
+        },
+    )
+
+    insert_job_fact_table = PythonOperator(
+        python_callable=insert_job_fact,
+        task_id="insert_data_fact_table",
+        op_kwargs={
+            "DATASET_ID": DATASET_ID,
+            "table_ref_id": "fact",
+            "query": QUERY_FACT,
+            "client": client,
+        },
+    )
+
+    insert_data_dim_time = PythonOperator(
+        python_callable=insert_job_dim_time,
+        task_id="insert_data_dim_time_table",
+        op_kwargs={
+            "DATASET_ID": DATASET_ID,
+            "table_ref_id": "dim_time",
+            "query": QUERY_DIM_TIME,
+            "client": client,
+        },
+    )
+
+    insert_job_dim_stock_table = PythonOperator(
+        python_callable=insert_job_dim_stock,
+        task_id="insert_data_dim_stock_table",
+        op_kwargs={
+            "DATASET_ID": DATASET_ID,
+            "table_ref_id": "dim_stock",
+            "query": QUERY_DIM_STOCK,
+            "client": client,
+        },
+    )
+
+    drop_temporary_table = PythonOperator(
+        python_callable=drop_temp_table,
+        task_id="drop_temporary_table",
+        op_kwargs={"DATASET_ID": DATASET_ID, "TABLE_ID": TABLE_ID, "client": client},
+    )
+
+    (
+        [
+            create_insert_temp_table_big_query,
+            create_table_fact,
+            create_dim_table_time,
+            create_table_stock_exchange_price,
+        ]
+        >> created_tables
+        >> [insert_job_fact_table, insert_data_dim_time, insert_job_dim_stock_table]
+        >> drop_temporary_table
+    )

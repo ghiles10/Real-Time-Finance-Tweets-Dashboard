@@ -41,3 +41,10 @@ elastic_search:
   password : ghiles10 
   index_name : tweets
   
+big_query: 
+
+  project_id: data-engineering-streaming
+  dataset_id: finance
+  bucket_name: finance-dashbord
+  google_application_credentials: "/opt/airflow/plugins/google_credentials.json"
+  table_id: temp-table
