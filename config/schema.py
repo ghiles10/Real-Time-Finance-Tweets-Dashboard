@@ -37,3 +37,10 @@ class SparkConfig(kafkaConfig, BaseModel):
     data_path: str
     batch_duration: str
     outputMode: str 
+
+class MongoDB(BaseModel):
+    
+    """ mongoDB config class """
+    
+    db_connection: str
+    bucket_name : str

@@ -36,6 +36,7 @@ class SendToKafka:
         logger.info("Symbols extracted from API finance")
 
     def send_tweets(self, topic: str = None) -> None:
+        
         tweet_extractor = ExtractTweets()
         logger.info("Class ExtractTweets initialized")
 

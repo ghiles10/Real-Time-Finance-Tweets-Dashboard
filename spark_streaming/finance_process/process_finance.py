@@ -7,7 +7,6 @@ ROOT = Path(__file__).parent.parent.parent
 # Append the path
 sys.path.append(f'{ROOT}')
 
-
 from spark_streaming.finance_process.process_finance_functions import preprocess_finance_stream, nested_data_finance_stream
 from spark_streaming.utils import read_kafka_streams
 from config import core, schema 
