@@ -51,17 +51,18 @@ class ExtractStock:
 
         # Parcours des symboles
         for symbol in self.symbols:
-            response = requests.get(url + f"{symbol[:-4]}-USDT", timeout=timeout)
+            if 'BTC' or 'ETH' in symbol: 
+                response = requests.get(url + f"{symbol[:-4]}-USDT", timeout=timeout)
 
-            # Vérification du code de statut de la réponse
-            if response.status_code == 200:
-                # Ajout des données au format JSON
-                # data.append(json.loads(response.text)["data"])
-                yield json.loads(response.text)["data"]
+                # Vérification du code de statut de la réponse
+                if response.status_code == 200:
+                    # Ajout des données au format JSON
+                    # data.append(json.loads(response.text)["data"])
+                    yield json.loads(response.text)["data"]
 
-            else : 
-                raise Exception(f"extract_data : response status code {response.status_code}")
-            
+                else : 
+                    raise Exception(f"extract_data : response status code {response.status_code}")
+                
 
 
 # Bloc principal

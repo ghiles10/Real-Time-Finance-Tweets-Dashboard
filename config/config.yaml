@@ -33,6 +33,7 @@ monog_db:
   
   db_connection: mongodb+srv://ghiles:ghiles10@cluster0.ru8hmhi.mongodb.net/?retryWrites=true&w=majority
   bucket_name: financed-data
+
   
 elastic_search: 
 

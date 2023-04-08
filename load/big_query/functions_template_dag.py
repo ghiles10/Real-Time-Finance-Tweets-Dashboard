@@ -9,7 +9,8 @@ def create_insert_temp_table(PROJET_ID, DATASET_ID, TABLE_ID, BUCKET, client):
 
     job_config = bigquery.LoadJobConfig(
         autodetect=True,
-    
+    skip_leading_rows=1
+
     )
 
     # define date
