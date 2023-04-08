@@ -47,11 +47,11 @@ class ExtractStock:
         logger.info("extracting finance data")
         
         # Limitation à 100 symboles maximum
-        self.symbols = list(set(self.symbols))[:5]
+        self.symbols = list(set(self.symbols))
 
         # Parcours des symboles
         for symbol in self.symbols:
-            if 'BTC' or 'ETH' in symbol: 
+            if 'BTC' in symbol or 'ETH' in symbol: 
                 response = requests.get(url + f"{symbol[:-4]}-USDT", timeout=timeout)
 
                 # Vérification du code de statut de la réponse
