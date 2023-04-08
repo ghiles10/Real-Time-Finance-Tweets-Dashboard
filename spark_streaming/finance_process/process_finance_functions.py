@@ -78,37 +78,32 @@ def preprocess_finance_stream(data_stream):
     return data_stream_json
 
 
-def nested_data_finance_stream(data_stream_json) : 
-    
+def nested_data_finance_stream(data_stream_json):
     """ denormalize data stream """
-        
+
     # write to nested json format
     data_stream_json = data_stream_json.withColumn("prices", struct(
         col("buy"), col("sell"), col("changeRate"), col("changePrice"),
         col("high"), col("low"), col("last"), col("averagePrice")
-        
     )).withColumn("fees", struct(
         col("takerFeeRate"), col("makerFeeRate"), col("takerCoefficient"), col("makerCoefficient")
-        
     )).withColumn("volume", struct(
         col("vol"), col("volValue")
-        
     )).withColumn("time", struct(
         col("year"), col("month"), col("day"), col("hour")
-        
     )).drop(
         "buy", "sell", "changeRate", "changePrice", "high", "low", "last", "averagePrice",
-        "takerFeeRate", "makerFeeRate", "takerCoefficient", "makerCoefficient", "vol", "volValue", 
-        "year", "month", "day", "hour"  
-    )
-    
-    data_stream_json = data_stream_json.select(
-    col("symbol"),
-    to_json(col("prices")).alias("prices"),
-    to_json(col("fees")).alias("fees"),
-    to_json(col("volume")).alias("volume"),
-    to_json(col("time")).alias("time")
+        "takerFeeRate", "makerFeeRate", "takerCoefficient", "makerCoefficient", "vol", "volValue",
+        "year", "month", "day", "hour"
     )
 
-    return data_stream_json
+    # No need to convert structs to JSON strings here
+    return data_stream_json.select(
+        col("symbol"),
+        col("prices"),
+        col("fees"),
+        col("volume"),
+        col("time")
+    )
+
     # data_stream_json.writeStream.format("console").start().awaitTermination() 

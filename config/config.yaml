@@ -22,7 +22,7 @@ spark_config:
   master: yarn
   app_name: Finance_tweet_dashboard
   checkpoint_path: gs://kafka-finance-data/cheks
-  data_path: gs://finance-dashbord/data
+  data_path: gs://financed-data/data
   batch_duration: 10 seconds
   outputMode: append
   topic_data: finance
@@ -32,7 +32,7 @@ spark_config:
 monog_db: 
   
   db_connection: mongodb+srv://ghiles:ghiles10@cluster0.ru8hmhi.mongodb.net/?retryWrites=true&w=majority
-  bucket_name: finance-dashbord
+  bucket_name: financed-data
   
 elastic_search: 
 
@@ -45,6 +45,6 @@ big_query:
 
   project_id: data-engineering-streaming
   dataset_id: finance
-  bucket_name: finance-dashbord
+  bucket_name: financed-data
   google_application_credentials: "/opt/airflow/plugins/google_credentials.json"
   table_id: temp-table

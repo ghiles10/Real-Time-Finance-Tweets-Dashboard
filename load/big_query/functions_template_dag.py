@@ -9,20 +9,11 @@ def create_insert_temp_table(PROJET_ID, DATASET_ID, TABLE_ID, BUCKET, client):
 
     job_config = bigquery.LoadJobConfig(
         autodetect=True,
-        skip_leading_rows=1,
-        time_partitioning=bigquery.TimePartitioning(
-            type_=bigquery.TimePartitioningType.DAY,
-            field="time",  # Name of the column to use for partitioning.
-        ),
+    
     )
 
     # define date
-    now = datetime.datetime.now()
-    year = str(now.year)
-    month = str(now.month)
-    day = str(now.day)
-
-    uri = f"{BUCKET}/data/year={year}/month={month}/day={day}/*.csv"
+    uri = f"gs://{BUCKET}/data/finance/*.json"
 
     load_job = client.load_table_from_uri(
         uri, table_id, job_config=job_config

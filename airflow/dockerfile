@@ -1,5 +1,6 @@
 # First-time build can take upto 10 mins.
 FROM apache/airflow:2.5.1
 
-COPY plugins/requirements.txt /requirements.txt
-RUN pip install -r /requirements.txt
+
+COPY plugins/requirements.txt requirements_airflow.txt
+RUN pip install -r requirements_airflow.txt
