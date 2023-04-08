@@ -21,7 +21,7 @@ spark_config:
 
   master: yarn
   app_name: Finance_tweet_dashboard
-  checkpoint_path: gs://kafka-finance-data/cheks
+  checkpoint_path: gs://financed-data/cheks
   data_path: gs://financed-data/data
   batch_duration: 10 seconds
   outputMode: append
