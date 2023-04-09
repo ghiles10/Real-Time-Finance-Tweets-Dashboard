@@ -22,7 +22,6 @@ def process_tweet(spark) -> None:
 
     # read data stream from kafka 
     data_stream = read_kafka_streams(
-                                    spark = spark,
                                     address = APP_CONFIG.bootstrap_servers,
                                     topic = APP_CONFIG.topic_tweets
                                     ) 
@@ -38,5 +37,5 @@ def process_tweet(spark) -> None:
     )
 
 
-if __name__ == __main__:
+if __name__ == "__main__":
     process_tweet(spark) 

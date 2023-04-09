@@ -24,12 +24,12 @@ def insert_json_file(bucket_name :str, file_path : str, db : pymongo.database.Da
             
             
 def load_collections(client  = client, bucket = bucket_name): 
-    """ Load and insert all json tweets files from gcs in MongoDB collection """
+    """ Load all json tweets files from gcs in MongoDB collection """
 
   
     db = client.twitter
 
-    for filename in list_blobs('finance-dashbord',"data/tweets/"):
+    for filename in list_blobs('financed-data',"data/tweets/"):
         
         if filename.endswith('.json'):
             insert_json_file( bucket,filename, db)
