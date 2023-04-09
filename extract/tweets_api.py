@@ -1,4 +1,6 @@
 import tweepy
+import sys
+sys.path.append("/workspaces/Finance-dashbord")
 from extract import stocks_api
 from config import core, schema
 import logging_config
@@ -55,17 +57,18 @@ class ExtractTweets :
             print(f"An error occurred: {e.response.status_code}")
             
         # process symbols 
-        # stocks_symbols = stocks_api.ExtractStock() 
-        # stocks_symbols.extract_symbols()
+        stocks_symbols = stocks_api.ExtractStock() 
+        stocks_symbols.extract_symbols()
                 
-        for symbol in stocks_symbols.symbols[:3]: 
-            hashtag = symbol.split("USDT")[0]
-    
-            # Retrieve tweets
-            tweets = api.search_tweets(q = hashtag, count = count, lang = lang)
-            
-            for tweet in tweets : 
-                yield tweet.text 
+        for symbol in stocks_symbols.symbols: 
+            if  symbol == 'BTCUSDT'  or symbol == 'ETHUSDT' or symbol == "DOGEUSDT" :   
+                hashtag = symbol.split("USDT")[0]
+        
+                # Retrieve tweets
+                tweets = api.search_tweets(q = hashtag, count = count, lang = lang)
+                
+                for tweet in tweets : 
+                    yield tweet.text 
 
 if __name__ == "__main__" : 
     test = ExtractTweets() 

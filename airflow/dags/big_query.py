@@ -5,10 +5,7 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 
-
-# ROOT = Path(__file__).parent.parent.parent.parent
 sys.path.append(r'/opt/airflow/src') 
-
 
 from load.big_query.schema import SCHEMA_FACT, SCHEMA_DIM_TIME, SCHEMA_DIM_STOCK
 from load.big_query.query import QUERY_FACT, QUERY_DIM_TIME, QUERY_DIM_STOCK

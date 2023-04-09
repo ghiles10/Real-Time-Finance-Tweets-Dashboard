@@ -1,6 +1,5 @@
 
-QUERY_FACT = f"""
-SELECT time.hour, symbol, prices.high, prices.low
+QUERY_FACT = f"""SELECT time.hour, symbol, prices.high, prices.low
 FROM data-engineering-streaming.finance.temp_table ; 
 """
 
