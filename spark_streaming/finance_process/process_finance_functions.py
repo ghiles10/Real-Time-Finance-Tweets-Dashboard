@@ -83,7 +83,7 @@ def nested_data_finance_stream(data_stream_json):
 
     # write to nested json format
     data_stream_json = data_stream_json.withColumn("prices", struct(
-        col("buy"), col("sell"), col("changeRate"), col("changePrice"),
+        col("json_data.buy"), col("sell"), col("changeRate"), col("changePrice"),
         col("high"), col("low"), col("last"), col("averagePrice")
     )).withColumn("fees", struct(
         col("takerFeeRate"), col("makerFeeRate"), col("takerCoefficient"), col("makerCoefficient")
