@@ -1,5 +1,11 @@
 import requests
 import json
+import re 
+import sys
+from pathlib import Path 
+
+ROOT = Path(__file__).resolve().parent.parent 
+sys.path.append(str(ROOT)) 
 from config import core, schema
 import logging_config
 
@@ -50,8 +56,9 @@ class ExtractStock:
         self.symbols = list(set(self.symbols))
 
         # Parcours des symboles
-        for symbol in self.symbols:
-            if 'BTC' in symbol or 'ETH' in symbol: 
+        for symbol  in self.symbols :
+            
+            if symbol == 'BTCUSDT'  or symbol == 'ETHUSDT' or symbol == "DOGEUSDT" : 
                 response = requests.get(url + f"{symbol[:-4]}-USDT", timeout=timeout)
 
                 # Vérification du code de statut de la réponse
