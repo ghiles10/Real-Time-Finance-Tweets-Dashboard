@@ -1,8 +1,8 @@
 import pymongo
 import json
 from google.cloud import storage
-from utils import client, bucket_name
-from gcs_connection import list_blobs
+from load.mongo_db.utils import client, bucket_name
+from load.mongo_db.gcs_connection import list_blobs
 
 
 def insert_json_file(bucket_name :str, file_path : str, db : pymongo.database.Database):
@@ -34,7 +34,6 @@ def load_collections(client  = client, bucket = bucket_name):
         if filename.endswith('.json'):
             insert_json_file( bucket,filename, db)
 
-    db.close()
 
 
 if __name__ == "__main__":

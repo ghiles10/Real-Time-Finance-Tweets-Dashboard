@@ -1,4 +1,4 @@
-from utils import es, index_name
+from load.elastic.utils import es, index_name
 from load.mongo_db.utils import client
 
 

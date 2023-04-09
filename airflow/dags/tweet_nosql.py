@@ -1,16 +1,16 @@
 import sys 
+sys.path.append(r'/opt/airflow/src') 
 import datetime
 from airflow.operators.dummy_operator import DummyOperator 
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 
-sys.path.append(r'/opt/airflow/src') 
 
-from load.mongo_db.laod_collections import load_collections 
+from load.mongo_db.load_collections import load_collections 
 from load.elastic.index_collections import index_tweets 
 from config import schema, core
 
-APP_CONFIG = schema.BigQuery(**core.load_config().data["monog_db"])
+# APP_CONFIG = schema.MongoDB(**core.load_config().data["monog_db"])
 
 default_args = {
     "owner": "airflow",
@@ -32,12 +32,12 @@ with DAG(
  
     load_tweet_mongodb = PythonOperator(
         python_callable=load_collections,
-        task_id="load tweet in mongo db"
+        task_id="load_tweet_in_mongo_db"
     )
     
     index_tweet_elastic = PythonOperator( 
         python_callable=index_tweets, 
-        task_id="index tweet in elastic search" 
+        task_id="index_tweet_in_elastic_search" 
     ) 
     
 

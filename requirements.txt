@@ -7,3 +7,4 @@ strictyaml==1.7.3
 tweepy==4.13.0
 kafka-python==2.0.2
 pyspark==3.3.2
+dash==2.9.2
