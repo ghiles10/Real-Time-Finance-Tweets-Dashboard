@@ -30,14 +30,16 @@ def process_finance(spark) -> None:
     data_json = nested_data_finance_stream(processed_stream)
 
     
-    ( data_json.writeStream.outputMode(APP_CONFIG.outputMode)
-    .format("json")
-    .option("path", str(APP_CONFIG.data_path) + "/" + "finance")
-    .option("checkpointLocation", APP_CONFIG.checkpoint_path)
-    .trigger( processingTime= str(APP_CONFIG.batch_duration )) 
-    .start()
-    .awaitTermination()
-    )
+    # ( data_json.writeStream.outputMode(APP_CONFIG.outputMode)
+    # .format("json")
+    # .option("path", str(APP_CONFIG.data_path) + "/" + "finance")
+    # .option("checkpointLocation", APP_CONFIG.checkpoint_path)
+    # .trigger( processingTime= str(APP_CONFIG.batch_duration )) 
+    # .start()
+    # .awaitTermination()
+    # )
+    
+    data_json.writeStream.format("console").start().awaitTermination() 
     
 if __name__ == "__main__":
     process_finance(spark)
