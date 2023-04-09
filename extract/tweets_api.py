@@ -57,8 +57,8 @@ class ExtractTweets :
             print(f"An error occurred: {e.response.status_code}")
             
         # process symbols 
-        stocks_symbols = stocks_api.ExtractStock() 
-        stocks_symbols.extract_symbols()
+        # stocks_symbols = stocks_api.ExtractStock() 
+        # stocks_symbols.extract_symbols()
                 
         for symbol in stocks_symbols.symbols: 
             if  symbol == 'BTCUSDT'  or symbol == 'ETHUSDT' or symbol == "DOGEUSDT" :   
