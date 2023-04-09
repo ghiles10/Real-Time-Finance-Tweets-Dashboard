@@ -27,7 +27,7 @@ def process_finance(spark) -> None:
     processed_stream = preprocess_finance_stream(data_stream)
 
     # nested data stream to json format
-    data_json = nested_data_finance_stream(processed_stream)
+    # data_json = nested_data_finance_stream(processed_stream)
 
     
     # ( data_json.writeStream.outputMode(APP_CONFIG.outputMode)
@@ -39,7 +39,7 @@ def process_finance(spark) -> None:
     # .awaitTermination()
     # )
     
-    data_json.writeStream.format("console").start().awaitTermination() 
+    processed_stream.writeStream.format("console").start().awaitTermination() 
     
 if __name__ == "__main__":
     process_finance(spark)
