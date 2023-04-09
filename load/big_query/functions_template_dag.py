@@ -9,12 +9,11 @@ def create_insert_temp_table(PROJET_ID, DATASET_ID, TABLE_ID, BUCKET, client):
 
     job_config = bigquery.LoadJobConfig(
         autodetect=True,
-    skip_leading_rows=1
-
+        source_format=bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
     )
 
     # define date
-    uri = f"gs://{BUCKET}/data/finance/*.json"
+    uri = f"gs://{BUCKET}/data-real/finance/*.json"
 
     load_job = client.load_table_from_uri(
         uri, table_id, job_config=job_config
@@ -50,7 +49,7 @@ def insert_job_fact(DATASET_ID, table_ref_id, query, client):
     table = client.get_table(table_ref)
 
     rows_to_insert = [
-        (str(row.time), row.symbol, row.volvalue, row.high, row.low) for row in results
+        (str(row.hour), row.symbol, row.high, row.low) for row in results
     ]
     if rows_to_insert:
         client.insert_rows(table, rows_to_insert)
@@ -69,8 +68,11 @@ def insert_job_dim_time(DATASET_ID, table_ref_id, query, client):
     table_ref = client.dataset(DATASET_ID).table(table_ref_id)
     table = client.get_table(table_ref)
 
+    # rows_to_insert = [
+    #     (str(row.time), str(row.year), row.month, row.day, row.hour) for row in results
+    # ]
     rows_to_insert = [
-        (str(row.time), str(row.year), row.month, row.day, row.hour) for row in results
+        (row.time) for row in results
     ]
     if rows_to_insert:
         client.insert_rows(table, rows_to_insert)
@@ -90,7 +92,7 @@ def insert_job_dim_stock(DATASET_ID, table_ref_id, query, client):
     table = client.get_table(table_ref)
 
     rows_to_insert = [
-        (row.symbol, row.buy, row.sell, row.changerate, row.changeprice, row.vol)
+        (row.symbol, row.buy, row.sell, row.vol)
         for row in results
     ]
     if rows_to_insert:

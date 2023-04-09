@@ -48,4 +48,4 @@ big_query:
   dataset_id: finance
   bucket_name: financed-data
   google_application_credentials: "/opt/airflow/plugins/google_credentials.json"
-  table_id: temp-table
+  table_id: temp_table
