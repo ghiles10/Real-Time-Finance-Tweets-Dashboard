@@ -32,9 +32,11 @@ def process_tweet(spark) -> None:
     ( data_stream.writeStream.outputMode(APP_CONFIG.outputMode)
     .format("json")
     .option("path", str(APP_CONFIG.data_path) + "/" + "tweets" )
-    .option("checkpointLocation", APP_CONFIG.checkpoint_path)
+    .option("checkpointLocation", APP_CONFIG.checkpoint_path + '/' + "tweets")
     .trigger( processingTime= str(APP_CONFIG.batch_duration )) 
     .start().awaitTermination()
     )
 
 
+if __name__ == __main__:
+    process_tweet(spark) 
