@@ -1,0 +1,51 @@
+twitter_credentials: 
+
+  ACCES_KEY: 
+  ACCES_SECRET: 
+  CONSUMER_KEY: 
+  CONSUMER_SECRET: 
+
+api_finance_config: 
+
+  url_symbols: 
+  timeout: 
+  url_data: 
+
+kafka_config:
+  
+  topic_data: 
+  topic_tweets: 
+  bootstrap_servers: 
+ 
+spark_config: 
+
+  master: 
+  app_name: 
+  checkpoint_path: 
+  data_path: 
+  batch_duration: 
+  outputMode: 
+  topic_data: 
+  topic_tweets: 
+  bootstrap_servers: 
+
+monog_db: 
+  
+  db_connection: 
+  bucket_name: 
+
+  
+elastic_search: 
+
+  cloud_id: 
+  user :  
+  password :  
+  index_name : 
+  
+big_query: 
+
+  project_id: 
+  dataset_id: 
+  bucket_name: 
+  google_application_credentials: 
+  table_id: 

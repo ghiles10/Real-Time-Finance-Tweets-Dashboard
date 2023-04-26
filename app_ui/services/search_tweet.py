@@ -4,8 +4,7 @@ from load.elastic.utils import es, index_name
 def search_tweet(crypto : str, date: str = "2023-04-09"): 
     
     """ search tweet by crypto and date in elastic search indices"""
-        
-        
+         
     query = {
         "bool": {
             "must": {

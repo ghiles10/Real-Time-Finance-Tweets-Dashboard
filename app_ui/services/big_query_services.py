@@ -52,20 +52,3 @@ class BigQueryService :
         query_job = client.query(query).to_dataframe()
 
         return query_job
-
-
-if __name__ == "__main__" : 
-    
-    import sys
-    sys.path.append(r'/workspaces/Finance-dashbord')
-    
-    from config import schema, core
-
-
-    # load configuration 
-    APP_CONFIG = schema.BigQuery(**core.load_config().data["big_query"])
-    project_id = APP_CONFIG.project_id 
-    table_id  = APP_CONFIG.dataset_id + "." + "fact"
-    
-    bq = BigQueryService(project_id) 
-    print(bq.plot_histogram_cryptos(table_id))
