@@ -7,7 +7,7 @@ sys.path.append(f"{ROOT}")
 
 from config import schema, core
 
-# Load Kafka configuration from the config file
+# Load  configuration from the config file
 APP_CONFIG = schema.ElasticSearch(**core.load_config().data["elastic_search"])
 
 

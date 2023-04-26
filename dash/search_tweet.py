@@ -1,5 +1,3 @@
-import sys
-sys.path.append(r'/workspaces/Finance-dashbord')
 from load.elastic.utils import es, index_name
 
 

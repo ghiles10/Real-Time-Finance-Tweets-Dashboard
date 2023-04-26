@@ -10,7 +10,6 @@ from title_big_query import symbols_list
 from search_tweet import search_tweet
 
 
-
 app = dash.Dash()
 
 title_options = symbols_list()
